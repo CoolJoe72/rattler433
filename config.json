@@ -7,12 +7,13 @@
   "startup": "application",
   "boot": "auto",
   "services": ["mqtt:want"],
-  "map": ["share"],
+  "map": ["config:rw"],
   "usb": true,
   "options": {
     "mqtt_prefix": "rtl_433",
     "ha_discovery_topic": "homeassistant",
     "retain": true,
+    "flex": false,
     "customize": {
       "active": false,
       "folder": "rattler"
@@ -37,6 +38,7 @@
     "mqtt_prefix": "str",
     "ha_discovery_topic": "str",
     "retain": "bool",
+    "flex": "bool",
     "customize": {
       "active": "bool",
       "folder": "str?"
