@@ -45,4 +45,4 @@ echo "\"mqtt_user\": \"${username}\"," >>/data/mqtt.json
 echo "\"mqtt_pass\": \"${password}\"" >>/data/mqtt.json
 echo "}" >>/data/mqtt.json
 
-/usr/bin/python3 config/rattler/device_creator/main.py
+/usr/bin/python3 /config/rattler/device_creator/main.py
