@@ -1,6 +1,6 @@
 {
   "name": "Rattler 433",
-  "version": "1.3.0b5",
+  "version": "1.3.0b6",
   "slug": "rtl_433",
   "description": "RTL_433 for Home Assistant",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
