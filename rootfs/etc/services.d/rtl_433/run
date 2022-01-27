@@ -5,7 +5,7 @@ declare cfig
 declare flexfig
 
 confdir="/rattler/"
-custdir=/config/$(bashio::config() 'customize.folder')/
+custdir="/config/$(bashio::config 'customize.folder')/"
 dir="${confdir}"
 if bashio::config.true "customize.active"; then
   if [[ ! bashio::fs.directory_exists "${custdir}" ]]; mkdir -p "${custdir}"
