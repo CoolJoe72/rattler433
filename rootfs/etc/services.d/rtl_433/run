@@ -7,13 +7,13 @@ declare flexfig
 confdir="/rattler/"
 custdir="/config/$(bashio::config 'customize.folder')/"
 dir="${confdir}"
-if bashio::config.true "customize.active"; then
-  if [[ ! bashio::fs.directory_exists "${custdir}" ]]; mkdir -p "${custdir}"
-  if [[ ! bashio::fs.file_exists "${custdir}rtl_433.conf" ]]; cp "${confdir}rtl_433.conf" "${custdir}"
-  if [[ ! bashio::fs.file_exists "${custdir}output.conf"]]; cp "${confdir}output.conf" "${custdir}"
+if [ bashio::config.true 'customize.active' ]; then
+  if [ ! -d "${custdir}" ]; mkdir -p "${custdir}"
+  if [ ! -f "${custdir}rtl_433.conf" ]; cp "${confdir}rtl_433.conf" "${custdir}"
+  if [ ! -f "${custdir}output.conf" ]; cp "${confdir}output.conf" "${custdir}"
   dir="${custdir}"
-  if bashio::config.true 'customize.flex'; then
-    if [[ ! bashio::fs.directory_exists "${custdir}flex" ]]; cp "${confdir}flex" "${custdir}" || bashio::exit.nok "Could not create Rattler Flex config folder!"
+  if [ bashio::config.true 'customize.flex' ]; then
+    if [ ! -d "${custdir}flex" ]; cp "${confdir}flex" "${custdir}" || bashio::exit.nok "Could not create Rattler Flex config folder!"
     for cfig in "${custdir}flex/*.conf"; do
       flexfig="$flexfig -c $cfig "
     done
