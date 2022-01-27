@@ -49,7 +49,7 @@ fi
 
 prefix=$(bashio::config 'mqtt_prefix')
 
-output="output mqtt://${host}:${port},user=${username},pass=${password},retain=${retain},devices=${prefix}[/model][/channel][/id][/ertserialnumber]"
+output="output mqtt://${host}:${port},user=${username},pass=${password},retain=${retain},devices=${prefix}[/model][/channel][/id]"
 
 echo ${output} > /rattler/output.conf
 echo "{" >/data/mqtt.json
