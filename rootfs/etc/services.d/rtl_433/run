@@ -20,4 +20,4 @@ if [ $(bashio::config.true 'customize.active') ]; then
   fi
 fi
 
-rtl_433 -c ${dir}rtl_433.conf $flexfig -c ${dir}output.conf
+rtl_433 -c ${dir}rtl_433.conf ${flexfig:-} -c ${dir}output.conf
