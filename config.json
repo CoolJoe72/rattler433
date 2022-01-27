@@ -13,10 +13,10 @@
     "mqtt_prefix": "rtl_433",
     "ha_discovery_topic": "homeassistant",
     "retain": true,
-    "flex": false,
     "customize": {
       "active": false,
-      "folder": "rattler"
+      "folder": "rattler",
+      "flex": false
     },
     "mqtt_host": "",
     "mqtt_port": 1883,
@@ -38,10 +38,10 @@
     "mqtt_prefix": "str",
     "ha_discovery_topic": "str",
     "retain": "bool",
-    "flex": "bool",
     "customize": {
       "active": "bool",
-      "folder": "str?"
+      "folder": "str?",
+      "flex": "bool"
     },
     "mqtt_host": "str?",
     "mqtt_port": "int?",

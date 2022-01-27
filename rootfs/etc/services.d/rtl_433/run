@@ -1,64 +1,23 @@
 #!/usr/bin/with-contenv bashio
-declare host
-declare password
-declare port
-declare username
-declare retain
-declare output
-declare prefix
-declare customize_dir
+declare confdir
+declare custdir
+declare cfig
+declare flexfig
 
-if ! bashio::services.available "mqtt"; then
-  bashio::log.info "No internal MQTT service found"
-  if bashio::config.has_value "mqtt_host"; then
-    host=$(bashio::config 'mqtt_host')
-  else
-    bashio::log.info "No external MQTT service defined"
-  fi
-  if bashio::config.has_value "mqtt_port"; then
-    port=$(bashio::config 'mqtt_port')
-  else
-    bashio::log.info "No external MQTT service defined"
-  fi
-  if bashio::config.has_value "mqtt_user"; then
-    username=$(bashio::config 'mqtt_user')
-  else
-    bashio::log.info "No external MQTT service defined"
-  fi
-  if bashio::config.has_value "mqtt_pass"; then
-    password=$(bashio::config 'mqtt_pass')
-  else
-    bashio::log.info "No external MQTT service defined"
-  fi
-else
-  host=$(bashio::services "mqtt" "host")
-  password=$(bashio::services "mqtt" "password")
-  port=$(bashio::services "mqtt" "port")
-  username=$(bashio::services "mqtt" "username")
-fi
-
-if bashio::config.true 'retain'; then
-  retain="1"
-else
-  retain="0"
-fi
-
-prefix=$(bashio::config 'mqtt_prefix')
-
-output="output mqtt://${host}:${port},user=${username},pass=${password},retain=${retain},devices=${prefix}[/model][/channel][/id][/ertserialnumber]"
-
-echo ${output}>/config/rattler/output.conf
-
-if bashio::config.true 'flex'; then
-  if [[ bashio::fs.directory_exists "/config/rattler/flex" ]]; then
-    # cat /config/rattler/flex/*.conf >> /config/rattler/rtl_433.conf
-    for conf in /config/rattler/flex/*.conf
-    do
-      confv="$confv -c $conf "
+confdir="/rattler/"
+custdir="/config/$(bashio::config() 'customize.folder')/"
+dir="${confdir}"
+if bashio::config.true "customize.active"; then
+  if [[ ! bashio::fs.directory_exists "${custdir}" ]]; mkdir -p "${custdir}"
+  if [[ ! bashio::fs.file_exists "${custdir}rtl_433.conf" ]]; cp "${confdir}rtl_433.conf" "${custdir}"
+  if [[ ! bashio::fs.file_exists "${custdir}output.conf"]]; cp "${confdir}output.conf" "${custdir}"
+  dir="${custdir}"
+  if bashio::config.true 'customize.flex'; then
+    if [[ ! bashio::fs.directory_exists "${custdir}flex" ]]; cp "${confdir}flex" "${custdir}" || bashio::exit.nok "Could not create Rattler Flex config folder!"
+    for cfig in "${custdir}flex/*.conf"; do
+      flexfig="$flexfig -c $cfig "
     done
-  else
-    mkdir -p /config/rattler/flex || bashio::exit.nok "Could not create Rattler Flex config folder!"
   fi
 fi
 
-rtl_433 -c /config/rattler/rtl_433.conf $confv -c /config/rattler/output.conf
+rtl_433 -c ${dir}rtl_433.conf $confv -c ${dir}output.conf

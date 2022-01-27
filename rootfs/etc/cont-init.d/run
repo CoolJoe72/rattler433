@@ -8,6 +8,9 @@ declare host
 declare password
 declare port
 declare username
+declare retain
+declare output
+declare prefix
 
 if ! bashio::services.available "mqtt"; then
   bashio::log.info "No internal MQTT service found"
@@ -38,6 +41,17 @@ else
   username=$(bashio::services "mqtt" "username")
 fi
 
+if bashio::config.true 'retain'; then
+  retain="1"
+else
+  retain="0"
+fi
+
+prefix=$(bashio::config 'mqtt_prefix')
+
+output="output mqtt://${host}:${port},user=${username},pass=${password},retain=${retain},devices=${prefix}[/model][/channel][/id][/ertserialnumber]"
+
+echo ${output} > /rattler/output.conf
 echo "{" >/data/mqtt.json
 echo "\"mqtt_host\": \"${host}\"," >>/data/mqtt.json
 echo "\"mqtt_port\": ${port}," >>/data/mqtt.json
@@ -45,4 +59,4 @@ echo "\"mqtt_user\": \"${username}\"," >>/data/mqtt.json
 echo "\"mqtt_pass\": \"${password}\"" >>/data/mqtt.json
 echo "}" >>/data/mqtt.json
 
-/usr/bin/python3 /config/rattler/device_creator/main.py
+/usr/bin/python3 /rattler/device_creator/main.py
