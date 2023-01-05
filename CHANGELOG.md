@@ -3,3 +3,4 @@
 ## 🎉 New Feature
 
 - Add option to disable internal rtl_433 instance, for users running rtl_433 on a seperate device.
+- Update to use AppArmor
