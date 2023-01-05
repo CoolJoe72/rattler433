@@ -1,6 +1,9 @@
 ## What’s changed
 
-## 🎉 New Feature
+## Updates
 
-- Add option to disable internal rtl_433 instance, for users running rtl_433 on a seperate device.
-- Update to use AppArmor
+- Brining up to date with DanielWinks updates 1.7.3
+
+## 🎉 New Feature in 1.7.4
+
+- Add support for "UID" temperature, and temperature/humidity devices. Rather than specifying channel + id, specify "uid" in the config.

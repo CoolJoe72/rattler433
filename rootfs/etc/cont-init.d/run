@@ -12,33 +12,33 @@ declare retain
 declare output
 declare prefix
 
-if ! bashio::services.available "mqtt"; then
-  bashio::log.info "No internal MQTT service found"
-  if bashio::config.has_value "mqtt_host"; then
-    host=$(bashio::config 'mqtt_host')
-  else
-    bashio::log.info "No external MQTT service defined"
-  fi
+if bashio::config.has_value "mqtt_host"; then
+  bashio::log.info "Using custom MQTT host."
+  bashio::log.info "Delete config value from 'mqtt_host' to use default HA Add-On Mosquitto broker."
+  host=$(bashio::config 'mqtt_host')
   if bashio::config.has_value "mqtt_port"; then
     port=$(bashio::config 'mqtt_port')
   else
-    bashio::log.info "No external MQTT service defined"
+    bashio::log.info "Missing port number for custom MQTT host."
   fi
   if bashio::config.has_value "mqtt_user"; then
     username=$(bashio::config 'mqtt_user')
+    if bashio::config.has_value "mqtt_pass"; then
+      password=$(bashio::config 'mqtt_pass')
+    else
+      bashio::log.info "Missing password for custom MQTT host."
+    fi
   else
-    bashio::log.info "No external MQTT service defined"
+    bashio::log.info "Missing user name for custom MQTT host."
   fi
-  if bashio::config.has_value "mqtt_pass"; then
-    password=$(bashio::config 'mqtt_pass')
-  else
-    bashio::log.info "No external MQTT service defined"
-  fi
-else
+elif bashio::services.available "mqtt"; then
+  bashio::log.info "Using internal MQTT service"
   host=$(bashio::services "mqtt" "host")
   password=$(bashio::services "mqtt" "password")
   port=$(bashio::services "mqtt" "port")
   username=$(bashio::services "mqtt" "username")
+else
+  bashio::log.info "No MQTT service found! Please install HA Add-On Mosquitto broker or define a custom MQTT host in Configuration."
 fi
 
 if bashio::config.true 'retain'; then
@@ -60,3 +60,7 @@ echo "\"mqtt_pass\": \"${password}\"" >>/data/mqtt.json
 echo "}" >>/data/mqtt.json
 
 /usr/bin/python3 /rattler/device_creator/main.py
+
+if bashio::config.false 'enable_internal_rtl433'; then
+  rm -rf /etc/services.d/rtl_433
+fi
