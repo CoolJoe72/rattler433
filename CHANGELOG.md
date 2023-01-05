@@ -1,5 +1,5 @@
 ## What’s changed
 
-## 🎉 Updates
+## 🎉 New Feature
 
-- Update rtl_433 to version 21.12
+- Add option to disable internal rtl_433 instance, for users running rtl_433 on a seperate device.
