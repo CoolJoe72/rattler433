@@ -1,5 +1,5 @@
 ## What’s changed
 
-## 🎉 New Feature
+## 🎉 Updates
 
-- Add support for long-term statistics for temperature and humidity sensors.
+- Update rtl_433 to version 21.12
