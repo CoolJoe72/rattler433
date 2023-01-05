@@ -20,6 +20,9 @@ profile rtl_433 flags=(attach_disconnected,mediate_deleted) {
   /run/{,**} rwk,
   /dev/tty rw,
 
+  # Needs access to build dir maybe??
+  /build/** rw,
+
   # Bashio
   /usr/lib/bashio/** ix,
   /tmp/** rwk,
